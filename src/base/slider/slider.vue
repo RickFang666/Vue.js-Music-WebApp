@@ -12,7 +12,7 @@
 </template>
 
 <script type='text/ecmascript-6'>
-import Bscroll from 'better-scroll'
+import BScroll from 'better-scroll'
 import {addClass} from 'common/js/dom'
 export default {
   data() {
@@ -76,7 +76,7 @@ export default {
       this.dots = new Array(this.children.length)
     },
     _initSlider() {
-      this.slider = new Bscroll(this.$refs.slider,{
+      this.slider = new BScroll(this.$refs.slider,{
         scrollX: true,
         scrollY: false,
         momentum: false,
@@ -109,6 +109,9 @@ export default {
           this.slider.goToPage(pageIndex, 0, 400)
         }, this.interval)
     }
+  },
+  destroyed() {
+    clearTimeout(this.timer)
   }
 }
 </script>
