@@ -46,9 +46,17 @@ export default {
         this._play()
       }
     } ,20)
+
+    window.addEventListener('resize', () => {
+      if (!this.slider) {
+        return
+      }
+      this._setSliderWidth(true)
+      this.slider.refresh()
+    })
   },
   methods: {
-    _setSliderWidth() {
+    _setSliderWidth(isResize) {
       this.children = this.$refs.sliderGroup.children
 
       let width = 0
@@ -59,7 +67,7 @@ export default {
         child.style.width = sliderWidth + 'px'
         width += sliderWidth
       }
-      if(this.loop) {
+      if(this.loop && !isResize) {
         width += 2*sliderWidth
       }
       this.$refs.sliderGroup.style.width = width + 'px'
@@ -85,10 +93,21 @@ export default {
           pageIndex -= 1
         }
         this.currentPageIndex = pageIndex
+
+        if (this.autoPlay) {
+          clearTimeout(this.timer)
+          this._play()
+        }
       })
     },
     _play() {
-
+      let pageIndex = this.currentPageIndex + 1
+      if(this.loop) {
+        pageIndex += 1
+      }
+      this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400)
+        }, this.interval)
     }
   }
 }
