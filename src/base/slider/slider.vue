@@ -78,13 +78,13 @@ export default {
     _initSlider() {
       this.slider = new BScroll(this.$refs.slider,{
         scrollX: true,
-        scrollY: false,
+        scrollY: true,
         momentum: false,
         snap: true,
         snapLoop: this.loop,
         snapThreshold: 0.3,
         snapSpeed: 400,
-        click: true
+        // click: true
       })
 
       this.slider.on('scrollEnd',() => {

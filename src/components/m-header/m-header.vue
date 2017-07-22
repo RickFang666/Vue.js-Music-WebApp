@@ -1,7 +1,7 @@
 <template>
   <div class="m-header">
     <div class="icon"></div>
-    <h1 class="text">Rick's Music</h1>
+    <h1 class="text">Amazing Music</h1>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -16,6 +16,8 @@
     height: 44px
     text-align: center
     color: $color-theme
+    background-color: rgba(0, 0, 222, .3)
+    border-bottom 1px solid $color-theme
     font-size: 0
     .icon
       display: inline-block
