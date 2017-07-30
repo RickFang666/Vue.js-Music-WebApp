@@ -9,7 +9,7 @@
        <li v-for="group in data" class="list-group" ref="listGroup">
         <h2 class="list-group-title">{{group.title}}</h2>
         <ul>
-          <li v-for="item in group.items" class="list-group-item">
+          <li @click="selectItem(item)" v-for="item in group.items" class="list-group-item">
             <img class="avatar" v-lazy="item.avatar">
             <span class="name">{{item.name}}</span>
           </li>
@@ -18,7 +18,7 @@
     </ul>
   <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
     <ul>
-      <li v-for="(item,index) in shortcutList"
+      <li  v-for="(item,index) in shortcutList"
       class="item"
       :data-index="index"
       :class="{'current': currentIndex===index}">
@@ -41,7 +41,7 @@
   import Loading from 'base/loading/loading'
 
   const ANCHOR_HEIGHT = 16
-  const TITLE_HEIGHT = 30
+  const TITLE_HEIGHT = 29
 
   export default {
     created() {
@@ -77,6 +77,9 @@
       }
     },
     methods: {
+      selectItem(item) {
+        this.$emit('select', item)
+      },
       onShortcutTouchStart(e) {
         let anchorIndex = getData(e.target, 'index')
         let firstTouch = e.touches[0]
