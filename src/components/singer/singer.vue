@@ -31,6 +31,9 @@ export default {
       })
       this.setSinger(singer)
     },
+        ...mapMutations({
+      setSinger: 'SET_SINGER'
+    }),
     _getSingerList(){
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
@@ -80,10 +83,7 @@ export default {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0)
       })
       return hot.concat(ret)
-    },
-    ...mapMutations({
-      setSinger: 'SET_SINGER'
-    })
+    }
   },
   components: {
     Listview
