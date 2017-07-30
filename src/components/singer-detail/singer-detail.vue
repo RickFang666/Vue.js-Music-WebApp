@@ -1,5 +1,5 @@
 <template>
-  <transition class="slide">
+  <transition name="slide">
     <div class="singer-detail">
 
     </div>
@@ -25,5 +25,5 @@
     transition all .3s
 
   .slide-enter, .slide-leave-to
-    transform: translate3d(100%,0%,0)
+    transform: translate3d(100%,100%,0)
 </style>
