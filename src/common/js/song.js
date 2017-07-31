@@ -4,13 +4,14 @@ export default class Song {
     this.mid = mid
     this.singer = singer
     this.name = name
+    this.album = album
     this.duration = duration
     this.image = image
     this.url = url
   }
 }
 
-export function createSong(musicData){
+export function createSong(musicData) {
   return new Song({
     id: musicData.songid,
     mid: musicData.songmid,
