@@ -1,11 +1,12 @@
 <template>
   <div class="player" v-show="playlist.length>0">
+    <transition name="normal">
     <div class="normal-player" v-show="fullScreen">
       <div class="background">
-        <img width="100%" height="100%" :src="currentSong.img">
+        <img width="100%" height="100%" :src="currentSong.image">
       </div>
     <div class="top">
-      <div class="back">
+      <div @click="back" class="back">
           <i class="icon-back"></i>
       </div>
         <h1 class="title" v-html="currentSong.name"></h1>
@@ -15,7 +16,7 @@
         <div class="middle-l">
           <div class="cd-wrapper">
             <div class="cd">
-              <img class="image" :src="currentSong.img">
+              <img class="image" :src="currentSong.image">
             </div>
           </div>
         </div>
@@ -40,31 +41,49 @@
         </div>
       </div>
     </div>
-    <div class="mini-player" v-show="!fullScreen">
+    </transition>
+    <transition name="mini">
+    <div class="mini-player" v-show="!fullScreen" @click="open" >
       <div class="icon">
-        <img width="40" height="40" :src="currentSong.img">
+        <img width="40" height="40" :src="currentSong.image">
       </div>
       <div class="text">
         <h2 class="name" v-html="currentSong.name"></h2>
         <p class="desc" v-html="currentSong.singer"></p>
       </div>
+      <div class="control">
+        <i class="icon-playlist"></i>
+      </div>
     </div>
+    </transition>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import {mapGetters} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
 
 export default {
   computed: {
     ...mapGetters([
       'fullScreen',
       'playlist',
-      'currentSong'
+      'currentSong',
+      'currentIndex'
     ])
   },
   created() {
-    console.log(this.currentSong)
+
+  },
+  methods: {
+    back() {
+      this.setFullScreen(false)
+    },
+    open() {
+      this.setFullScreen(true)
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN'
+    })
   }
 }
 </script>
@@ -242,15 +261,15 @@ export default {
           .icon-favorite
             color: $color-sub-theme
       &.normal-enter-active, &.normal-leave-active
-        transition: all 0.4s
+        transition: all 0.5s
         .top, .bottom
-          transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
+          transition: all 0.5s cubic-bezier(.72,1.21,.85,1.26)
       &.normal-enter, &.normal-leave-to
         opacity: 0
         .top
-          transform: translate3d(0, -100px, 0)
+          transform: translate3d(100%, -100px, 0)
         .bottom
-          transform: translate3d(0, 100px, 0)
+          transform: translate3d(-100%, 100px, 0)
     .mini-player
       display: flex
       align-items: center
@@ -262,9 +281,10 @@ export default {
       height: 60px
       background: $color-highlight-background
       &.mini-enter-active, &.mini-leave-active
-        transition: all 0.4s
+        transition: all 0.5s
       &.mini-enter, &.mini-leave-to
         opacity: 0
+        transform: translate3d(100%, 100px, 0)
       .icon
         flex: 0 0 40px
         width: 40px

@@ -1,4 +1,4 @@
-import * as types from './mutation-types.js'
+import * as types from './mutation-types'
 
 const mutations = {
   [types.SET_SINGER](state, singer) {
@@ -21,7 +21,7 @@ const mutations = {
   },
   [types.SET_CURRENT_INDEX](state, index) {
     state.currentIndex = index
-  },
+  }
 }
 
 export default mutations
