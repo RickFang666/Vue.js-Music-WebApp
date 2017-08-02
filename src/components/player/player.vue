@@ -92,6 +92,9 @@ export default {
     }
   },
   computed: {
+    percent() {
+      return this.currentTime / this.currentSong.duration
+    },
     disableCls() {
       return this.songReady? '':'disable'
     },
@@ -241,9 +244,6 @@ export default {
     },
     togglePlaying() {
       this.setPlayingState(!this.playing)
-    },
-    percent() {
-      return this.currentTime / this.currengSong.duration
     },
   },
   watch: {
