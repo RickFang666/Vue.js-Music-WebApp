@@ -86,8 +86,7 @@ import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
 import {playMode} from 'common/js/config'
 import {shuffle} from 'common/js/util'
-
-
+import {getLyric} from 'common/js/song'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -305,6 +304,7 @@ export default {
       }
       this.$nextTick(() => {
         this.$refs.audio.play()
+        this.currentSong.getLyric()
       })
     },
     playing(newPlaying) {
