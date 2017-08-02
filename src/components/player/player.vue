@@ -64,7 +64,7 @@
         <p class="desc" v-html="currentSong.singer"></p>
       </div>
       <div class="control">
-        <progress-circle>
+        <progress-circle :percent="percent" :radius="radius">
           <i @click.stop="togglePlaying":class="miniIcon" class="icon-mini"></i>
         </progress-circle>
 
@@ -92,7 +92,8 @@ export default {
   data() {
     return {
       songReady: false,
-      currentTime: 0
+      currentTime: 0,
+      radius: 32
     }
   },
   computed: {
