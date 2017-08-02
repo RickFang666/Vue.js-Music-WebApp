@@ -396,16 +396,21 @@ export default {
       this.songReady = false
     },
     prev() {
-      if(!this.songReady) {
+      if (!this.songReady) {
         return
       }
-      let index = this.currentIndex - 1
-      if(index === -1) {
-        index = this.playlist.length - 1
-      }
-      this.setCurrentIndex(index)
-      if(!this.playing) {
-        this.togglePlaying()
+      if (this.playlist.length === 1) {
+        this.loop()
+        return
+      } else {
+        let index = this.currentIndex - 1
+        if (index === -1) {
+          index = this.playlist.length - 1
+        }
+        this.setCurrentIndex(index)
+        if (!this.playing) {
+          this.togglePlaying()
+        }
       }
       this.songReady = false
     },
@@ -436,10 +441,10 @@ export default {
           this.playingLyric = ''
           this.currentLineNum = 0
         }
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.$refs.audio.play()
         this.getLyric()
-      })
+      }, 1000)
     },
     playing(newPlaying) {
       const audio = this.$refs.audio
