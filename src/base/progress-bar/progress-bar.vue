@@ -14,6 +14,60 @@
 </template>
 
 <script type="text/ecmascript-6">
+import {prefixStyle} from 'common/js/dom'
+
+const progressBtnWidth = 16
+const transform = prefixStyle('transform')
+
+
+export default {
+  props: {
+    percent: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    progressTouchStart(e) {
+      this.touch.initiated = true
+      this.touch.startX = e.touches[0].pageX
+      this.touch.left = this.$refs.progress.clientWidth
+    },
+    progressTouchMove(e) {
+      if(!this.touch.initiated) {
+        return
+      }
+      const deltaX = e.touches[0].pageX - this.touch.startX
+      const offsetWidth = Math.min(this.$refs.progressBar.clientWidth - progressBtnWidth, Math.max(0, this.touch.left+ deltaX))
+      this._offset(offsetWidth)
+    },
+    progressTouchEnd(e) {
+      this.touch.initiated = false
+      this._treggerPercent()
+    },
+    _treggerPercent() {
+      const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+      const percent = this.$refs.progress.clientWidth / barWidth
+      this.$emit('percentChange', percent)
+    },
+    _offset(offsetWidth) {
+      this.$refs.progress.style.width = `${offsetWidth}px`
+      this.$refs.progressBtn.style[transform] = `translate3D(${offsetWidth}px, 0, 0)`
+    },
+  },
+  created() {
+    this.touch = {}
+  },
+  watch: {
+    percent(newPercent) {
+      if((newPercent >= 0) && !this.touch.initiated) {
+        const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
+        const offsetWidth = newPercent * barWidth
+        this._offset(offsetWidth)
+      }
+    }
+  }
+}
 
 </script>
 <style scoped lang="stylus" rel="stylesheet/stylus">
