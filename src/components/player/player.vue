@@ -36,7 +36,7 @@
         <div class="operators">
 
           <div class="icon i-left">
-            <i class="icon-sequence"></i>
+            <i @click="changeMode" :class="iconMode"></i>
           </div>
           <div :class="disableCls" @click="prev" class="icon i-left">
             <i class="icon-prev"></i>
@@ -74,7 +74,7 @@
       </div>
     </div>
     </transition>
-    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
+    <audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updateTime" @ended="end" ></audio>
   </div>
 </template>
 
@@ -84,6 +84,10 @@ import {prefixStyle} from 'common/js/dom'
 import animations from 'create-keyframe-animation'
 import ProgressBar from 'base/progress-bar/progress-bar'
 import ProgressCircle from 'base/progress-circle/progress-circle'
+import {playMode} from 'common/js/config'
+import {shuffle} from 'common/js/util'
+
+
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -97,6 +101,9 @@ export default {
     }
   },
   computed: {
+    iconMode(){
+      return this.mode === playMode.sequence ? 'icon-sequence':this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
+    },
     percent() {
       return this.currentTime / this.currentSong.duration
     },
@@ -118,7 +125,9 @@ export default {
       'currentSong',
       'currentIndex',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'mode',
+      'sequenceList'
     ])
   },
   created() {
@@ -134,7 +143,9 @@ export default {
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
       setPlayingState: 'SET_PLAYING_STATE',
-      setCurrentIndex: 'SET_CURRENT_INDEX'
+      setCurrentIndex: 'SET_CURRENT_INDEX',
+      setPlayMode: 'SET_PLAY_MODE',
+      setPlaylist: 'SET_PLAYLIST'
     }),
     enter(el, done) {
       const{x, y, scale}= this._getPosAndScale()
@@ -208,6 +219,25 @@ export default {
         this.togglePlaying()
       }
     },
+    changeMode() {
+      const mode = (this.mode + 1) % 3
+      this.setPlayMode(mode)
+      let list = null
+      if (mode === playMode.random) {
+        list = shuffle(this.sequenceList)
+      }
+      else {
+        list = this.sequenceList
+      }
+      this.resetCurrentIndex(list)
+      this.setPlaylist(list)
+    },
+    resetCurrentIndex(list) {
+      let index = list.findIndex((item) => {
+        return item.id === this.currentSong.id
+      })
+      this.setCurrentIndex(index)
+    },
     _pad(num, n = 2) {
       let len = num.toString().length
       while(len < n) {
@@ -218,6 +248,17 @@ export default {
     },
     updateTime(e) {
       this.currentTime = e.target.currentTime
+    },
+    end(){
+      if(this.mode === playMode.loop) {
+        this.loop()
+      }else {
+        this.next()
+      }
+    },
+    loop() {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
     },
     next() {
       if(!this.songReady) {
@@ -258,7 +299,10 @@ export default {
     },
   },
   watch: {
-    currentSong() {
+    currentSong(newSong, oldSong) {
+      if(newSong.id === oldSong.id) {
+        return
+      }
       this.$nextTick(() => {
         this.$refs.audio.play()
       })
@@ -470,7 +514,7 @@ export default {
       z-index: 180
       width: 100%
       height: 60px
-      background: $color-highlight-background
+      background: $color-miniPlay-background
       &.mini-enter-active, &.mini-leave-active
         transition: all 0.5s
       &.mini-enter, &.mini-leave-to
