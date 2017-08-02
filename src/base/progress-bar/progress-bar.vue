@@ -43,9 +43,13 @@ export default {
     },
     progressTouchEnd(e) {
       this.touch.initiated = false
-      this._treggerPercent()
+      this._triggerPercent()
     },
-    _treggerPercent() {
+    progressClick(e){
+      this._offset(e.offsetX)
+      this._triggerPercent()
+    },
+    _triggerPercent() {
       const barWidth = this.$refs.progressBar.clientWidth - progressBtnWidth
       const percent = this.$refs.progress.clientWidth / barWidth
       this.$emit('percentChange', percent)
