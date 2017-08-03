@@ -7,6 +7,8 @@
 
 ### 演示demo图
 ![](./src/common/image/music1.gif)
+![](./src/common/image/music2.gif)
+![](./src/common/image/music3.gif)
 
 #### 视图层
 >
