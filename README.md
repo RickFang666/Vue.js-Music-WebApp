@@ -4,6 +4,10 @@
 ### 概述
 项目是基于Vue.js的一个Web Music App,目前实现数据获取，推荐页，歌手页和播发器功能，待持续完善。。。
 项目的大致流程是Vue-cli构建开发环境，分析需求，设计构思，规划目录结构，开始编码。
+
+### 演示demo图
+![](./src/common/image/music1.gif)
+
 #### 视图层
 >
 * 推荐页
@@ -30,8 +34,6 @@
 * [x] Better-Scroll
 * [x] Webpack
 
-### 演示demo图
-![](./src/common/image/music1.gif)
 
 #### src目录结构
 ![](./src/common/image/vueDir.jpg)
