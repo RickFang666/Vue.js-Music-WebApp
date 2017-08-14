@@ -48,12 +48,7 @@
 ![](./src/common/image/vueDir2.jpg)
 
 >
-为了防止切换歌曲时点击速度过快导致歌曲播放错误，使用了`audio`的`onplay`API，结合`Vuex`获取到数据，判断当前歌曲数据请求到才可以切换下一首歌曲，判断函数如下
-``` javascript
- ready() {
-   this.songReady = true
- }
-```
+为了防止切换歌曲时点击速度过快导致歌曲播放错误，使用了`audio`的`onplay`API，结合`Vuex`获取到数据，判断当前歌曲数据请求到才可以切换下一首歌曲。
 #### 数据处理
 通过调用QQ音乐的JSONP接口，获取的数据并不能直接拿来用，需要做进一步的规格化，达到我们使用的要求，所以在这方面单独封装了一个`class`来处理这方面的数据，具体请看`src/common/js/song.js`
 
